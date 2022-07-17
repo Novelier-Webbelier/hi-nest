@@ -40,13 +40,11 @@ export class MoviesController {
 
   @Delete(':id')
   remove(@Param('id') movieId: number) {
-    console.log(typeof movieId);
     return this.moviesService.deleteOne(movieId);
   }
 
   @Patch(':id')
   path(@Param('id') movieId: number, @Body() updateData: UpdateMovieDto) {
-    console.log(typeof movieId);
     return this.moviesService.update(movieId, updateData);
   }
 }
