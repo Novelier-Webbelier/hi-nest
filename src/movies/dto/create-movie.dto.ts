@@ -4,13 +4,13 @@ export class CreateMovieDto {
   @IsString()
   readonly title: string;
 
+  @IsOptional()
   @IsString()
   readonly description: string;
 
   @IsNumber()
   readonly year: number;
 
-  @IsOptional()
   @IsString({ each: true })
   readonly genres: string[];
 }
