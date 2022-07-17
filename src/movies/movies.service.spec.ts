@@ -54,7 +54,7 @@ describe('MoviesService', () => {
         title: 'Test Movie',
         genres: ['Test'],
         year: 2000,
-        description: 'This is test movie',
+        description: 'This is a test movie',
       });
 
       const beforeDelete = service.getAll().length;
@@ -82,11 +82,45 @@ describe('MoviesService', () => {
         title: 'Test Movie',
         genres: ['Test'],
         year: 2000,
-        description: 'This is test movie',
+        description: 'This is a test movie',
       });
 
       const afterCreate = service.getAll().length;
       expect(afterCreate).toBeGreaterThan(beforeCreate);
+    });
+  });
+
+  describe('update', () => {
+    it('should update a movie', () => {
+      service.createOne({
+        title: 'Test Movie',
+        genres: ['Test'],
+        year: 2000,
+        description: 'This is a test movie',
+      });
+
+      const beforeUpdate = service.getOne(service.getAll().length);
+
+      service.update(beforeUpdate.id, {
+        genres: ['Test 2', ...beforeUpdate.genres],
+        year: beforeUpdate.year - 1,
+      });
+
+      const afterUpdate = service.getOne(service.getAll().length);
+
+      expect(beforeUpdate.genres.length).toBeLessThan(
+        afterUpdate.genres.length,
+      );
+      expect(beforeUpdate.year).toBeGreaterThan(afterUpdate.year);
+    });
+
+    it('should throw 404 error', () => {
+      try {
+        service.update(999, {});
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Movie with ID 999 not found.');
+      }
     });
   });
 });
